@@ -10,7 +10,7 @@ git:
   submodules: false
 
 before_install:
-  - git config --global user.email "${GIT_EMAIL}
+  - git config --global user.email "${GIT_EMAIL}"
   - git config --global user.name "${GIT_UN}"
 
 script:
@@ -18,5 +18,5 @@ script:
 
 after_success:
   - git add -A
-  - git commit -m"travis update"
+  - git commit -m "Data Updated."
   - git push -q https://${GH_KEY}@github.com/beansrowning/travis-ncov.git HEAD:master
