@@ -2,12 +2,8 @@ conv_time <- function(x){
   as.POSIXct('1970-01-01', tz = 'GMT') + x / 1000
 }
 
-get_ncov <- function(port = c('area', 'overall', 'provinceName', 'news', 'rumors'),
-                     method = c('ncovr', 'api'),
-                     base = 'https://lab.isaaclin.cn/nCoV/api/'){
-  # port <- match.arg(port)
-  method <- match.arg(method)
-  if(method == 'api'){
+get_ncov <- function(port = c('area', 'overall', 'provinceName', 'news', 'rumors'), base = 'https://lab.isaaclin.cn/nCoV/api/'){
+
     ncov <- lapply(port,
                    function(x) {
                      get_raw <- httr::GET(paste0(base, x))
@@ -15,10 +11,8 @@ get_ncov <- function(port = c('area', 'overall', 'provinceName', 'news', 'rumors
                      jsonlite::fromJSON(get_text)$results
                    })
     names(ncov) <- port
-  }
-  if(method == 'ncovr'){
-    ncov <- readRDS(gzcon(url('https://github.com/pzhaonet/ncovr/raw/master/inst2/ncov_tidy.RDS')))
-  }
+
+
   ncov
 }
 
@@ -47,7 +41,7 @@ conv_ncov <- function(ncov){
 }
 
 # Sys.setlocale('LC_CTYPE', 'Chinese')
-ncov <- get_ncov(port = c('area?latest=0', 'overall', 'provinceName', 'news', 'rumors'), method = 'api')
+ncov <- get_ncov(port = c('area?latest=0', 'overall', 'provinceName'))
 names(ncov)[1] <- 'area'
 ncov_tidy <- conv_ncov(ncov)
 saveRDS(ncov_tidy, 'data/ncov_tidy.RDS')

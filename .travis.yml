@@ -10,8 +10,8 @@ git:
   submodules: false
 
 before_install:
-  - git config --global user.email "baydap@gmail.com"
-  - git config --global user.name "pzhaonet"
+  - git config --global user.email "${GIT_EMAIL}
+  - git config --global user.name "${GIT_UN}"
 
 script:
   - Rscript scripts/run.R
@@ -19,4 +19,4 @@ script:
 after_success:
   - git add -A
   - git commit -m"travis update"
-  - git push -q https://${GITHUB_PAT}@github.com/pzhaonet/travis-ncov.git HEAD:master
+  - git push -q https://${GH_KEY}@github.com/beansrowning/travis-ncov.git HEAD:master
