@@ -6,10 +6,9 @@ get_ncov <- function(port = c('area', 'overall', 'provinceName', 'news', 'rumors
 
     ncov <- lapply(port,
                    function(x) {
-                     get_raw <- httr::GET(paste0(base, x))
-                     get_text <- httr::content(get_raw, "text")
-                     jsonlite::fromJSON(get_text)$results
+                     jsonlite::fromJSON(paste0(base, x))$results
                    })
+
     names(ncov) <- port
 
 
@@ -36,15 +35,11 @@ conv_ncov <- function(ncov){
       ncov_area$cities[i][[1]]$modifyTime <- ncov_area$modifyTime[i]
     }
   }
-  ncov$area <- dplyr::bind_rows(ncov_area$cities)
+  ncov$cities <- rbind(ncov_area$cities)
   ncov
 }
 
-# Sys.setlocale('LC_CTYPE', 'Chinese')
 ncov <- get_ncov(port = c('area?latest=0', 'overall', 'provinceName'))
 names(ncov)[1] <- 'area'
 ncov_tidy <- conv_ncov(ncov)
-saveRDS(ncov_tidy, 'data/ncov_tidy.RDS')
-saveRDS(ncov, 'data/ncov.RDS')
-
-
+saveRDS(ncov_tidy, 'data/ncov.RDS')
