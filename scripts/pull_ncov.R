@@ -1,3 +1,4 @@
+renv::restore()
 library(dplyr)
 library(jsonlite)
 library(tidyr)
