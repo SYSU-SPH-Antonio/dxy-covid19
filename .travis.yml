@@ -5,11 +5,16 @@ addons:
   apt:
     packages:
       - libudunits2-dev
+      - gdal-bin
+      - libgdal1-dev
 cache:
   directories:
     - $HOME/.local/share/renv
     - $TRAVIS_BUILD_DIR/renv/library
   packages: true
+
+r_binary_packages:
+  - rgdal
 
 git: 
   depth: 5
