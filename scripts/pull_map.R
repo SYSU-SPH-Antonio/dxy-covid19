@@ -11,12 +11,12 @@ set_rhdx_config(hdx_site = "prod")
 
 prefecture_shp <- pull_dataset(shp_lnk) %>%
   get_resource(5) %>%
-  read_resource()
+  read_resource(download_folder = tempdir())
 
 st_write(prefecture_shp, "data/china_adm2.geojson")
 
 province_shp <- pull_dataset(shp_lnk) %>%
   get_resource(3) %>%
-  read_resource()
+  read_resource(download_folder = tempdir())
 
 st_write(province_shp, "data/china_adm1.geojson")
