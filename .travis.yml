@@ -14,7 +14,8 @@ before_install:
   - git config --global user.name "${GIT_UN}"
 
 script:
-  - Rscript scripts/run.R
+  - Rscript scripts/pull_ncov.R
+  - Rscript scripts/pull_map.R
 
 after_success:
   - git add -A

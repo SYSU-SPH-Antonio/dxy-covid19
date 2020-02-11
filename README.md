@@ -4,3 +4,5 @@
 
 A Travis-CI Cron task to pull and save DXY data for analysis.  
 
+TODO: Cleaning.  
+
