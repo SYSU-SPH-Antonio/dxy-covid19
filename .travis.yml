@@ -1,8 +1,14 @@
 language: r
-sudo: false
 latex: false
 pandoc: false
+addons:
+  apt:
+    packages:
+      - libudunits2-dev
 cache:
+  directories:
+    - $HOME/.local/share/renv
+    - $TRAVIS_BUILD_DIR/renv/library
   packages: true
 
 git: 
@@ -10,11 +16,11 @@ git:
   submodules: false
 
 before_install:
-  - sudo apt-get install -y libudunits2-dev
   - git config --global user.email "${GIT_EMAIL}"
   - git config --global user.name "${GIT_UN}"
 
 script:
+  - Rscript -e "renv::restore()"
   - Rscript scripts/pull_ncov.R
   - Rscript scripts/pull_map.R
 
