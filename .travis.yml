@@ -27,7 +27,7 @@ before_install:
 script:
   - Rscript -e "renv::restore()"
   - Rscript scripts/pull_ncov.R
-  - Rscript scripts/pull_map.R
+  # - Rscript scripts/pull_map.R # No longer needed, timeout issues
 
 after_success:
   - git add -A
