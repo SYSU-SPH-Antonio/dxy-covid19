@@ -13,10 +13,10 @@ prefecture_shp <- pull_dataset(shp_lnk) %>%
   get_resource(5) %>%
   read_resource(download_folder = tempdir())
 
-st_write(prefecture_shp, "data/china_adm2.geojson")
+st_write(prefecture_shp, "data/china_adm2.geojson", delete_dsn = TRUE)
 
 province_shp <- pull_dataset(shp_lnk) %>%
   get_resource(3) %>%
   read_resource(download_folder = tempdir())
 
-st_write(province_shp, "data/china_adm1.geojson")
+st_write(province_shp, "data/china_adm1.geojson", delete_dsn = TRUE)
