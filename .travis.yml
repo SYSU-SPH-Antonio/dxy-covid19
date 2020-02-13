@@ -32,4 +32,4 @@ script:
 after_success:
   - git add -A
   - git commit -m "Data Updated."
-  - git push -q https://${GH_KEY}@github.com/beansrowning/travis-ncov.git HEAD:master
+  - git push -q https://${GH_KEY}@github.com/beansrowning/dxy-covid19.git HEAD:master
