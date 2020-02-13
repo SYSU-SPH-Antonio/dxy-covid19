@@ -7,12 +7,24 @@ conv_time <- function(x) {
 }
 
 get_ncov <- function(
-  port = c("area", "overall", "provinceName", "news", "rumors"),
-  base = "https://lab.isaaclin.cn/nCoV/api/") {
+  port = c("area", "overall", "news", "rumors"),
+  base = "https://raw.githubusercontent.com/BlankerL/DXY-COVID-19-Data/master/json/") {
+
+    stopifnot(port %in% c("area", "overall", "news", "rumors"))
+
+    url_resolve <- function(x) {
+      switch(
+        x,
+        area = "DXYArea.json",
+        overall = "DXYOverall.json",
+        news = "DXYNews.json",
+        rumors = "DXYRumors.json"
+      )
+    }
 
     ncov <- lapply(port,
                    function(x) {
-                     jsonlite::fromJSON(paste0(base, x))$results
+                     jsonlite::fromJSON(paste0(base, url_resolve(x)))$results
                    })
 
     names(ncov) <- port
@@ -32,18 +44,12 @@ conv_ncov <- function(ncov) {
   # Convert all to tibble
   ncov$area <- as_tibble(ncov$area)
   ncov$overall <- as_tibble(ncov$overall)
-
-  # Pull prefecture data
-  ncov$cities <- ncov$area %>%
-    dplyr::select(country, provinceName, provinceShortName, updateTime, createTime, modifyTime, cities) %>%
-    tidyr::unnest(cities)
   
   return(ncov)
 }
 
 # Pull data and convert
-ncov <- get_ncov(port = c("area?latest=0", "overall", "provinceName"))
-names(ncov)[1] <- "area"
+ncov <- get_ncov(port = c("area", "overall"))
 ncov_tidy <- conv_ncov(ncov)
 
 # Save to RDS
