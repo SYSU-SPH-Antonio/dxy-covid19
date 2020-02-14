@@ -1,5 +1,5 @@
 library(dplyr)
-library(jsonlite)
+library(mongolite)
 library(tidyr)
 
 conv_time <- function(x) {
@@ -33,6 +33,24 @@ get_ncov <- function(
   ncov
 }
 
+# Query the DXY Crawler DB and pull aggregate counts
+query_db <- function(collection = "DXYArea", uri = "localhost", dbname = "COVID-19") {
+  con <- mongo(collection = collection, db = dbname, url = sprintf("mongodb://%s", uri))
+
+  on.exit(con$disconnect())
+
+  data_out <- con$aggregate(
+  '[{
+    "$sort": {
+      "updateTime": -1,
+      "crawlTime": -1
+    }
+  }]',
+  options = '{"allowDiskUse":true}'
+)
+
+  return(data_out[, -1])
+}
 
 conv_ncov <- function(ncov) {
   # Convert Time Stamps
@@ -49,7 +67,11 @@ conv_ncov <- function(ncov) {
 }
 
 # Pull data and convert
-ncov <- get_ncov(port = c("area", "overall"))
+collections <- c(area = "DXYArea", overall = "DXYOverall")
+
+ncov <- lapply(collections, query_db) %>%
+  setNames(names(collections))
+
 ncov_tidy <- conv_ncov(ncov)
 
 # Save to RDS

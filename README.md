@@ -2,4 +2,4 @@
 
 [![Build Status](https://travis-ci.org/beansrowning/dxy-covid19.svg?branch=master)](https://travis-ci.org/beansrowning/dxy-covid19)
 
-A Travis-CI Cron task to pull and save DXY data for analysis.
+This branch pulls directly from the feed of the DXY web scraper via a local MongoDB installation.   
