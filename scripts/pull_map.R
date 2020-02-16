@@ -1,5 +1,11 @@
 library(rhdx)
 library(sf)
+library(dplyr) 
+
+download.file('http://stat-athens.aueb.gr/~jbn/papers/files/14/14_bivpois_RDATA.zip', 
+              f <- tempfile())
+unzip(f, exdir=tempdir())
+load(file.path(tempdir(), '.RData'))
 
 # Chinese ADM 0-2 shapefile
 # https://data.humdata.org/dataset/china-administrative-boundaries
@@ -20,3 +26,7 @@ province_shp <- pull_dataset(shp_lnk) %>%
   read_resource(download_folder = tempdir())
 
 st_write(province_shp, "data/china_adm1.geojson", delete_dsn = TRUE)
+
+###If above code doesn't work, use code below to load maps from filed in working directory
+province_shp<-st_read("maps/chn_admbnda_adm1_ocha.shp")
+prefecture_shp<-st_read("maps/chn_admbnda_adm2_ocha.shp")
